@@ -48,11 +48,11 @@ export class TelegramBotService implements OnModuleInit, OnModuleDestroy {
 
   private showBannerAndMenu = async (ctx: Context) => {
     const bannerText = `
-🌟 НОВЕ ЖИТТЯ ВАШИМ МЕБЛЯМ! 🌟
-Професійна перетяжка та оновлення
-Якісні матеріали • Швидко • Доступно
-Звертайтеся до нас для професійної перетяжки та оновлення ваших меблів!
-Компанія МЕВАРО: @romaniv21
+  🌟 НОВЕ ЖИТТЯ ВАШИМ МЕБЛЯМ! 🌟
+  Професійна перетяжка та оновлення
+  Якісні матеріали • Швидко • Доступно
+  Звертайтеся до нас для професійної перетяжки та оновлення ваших меблів!
+  Компанія МЕВАРО: @romaniv21
     `;
 
     const keyboard = Markup.inlineKeyboard([
@@ -62,26 +62,26 @@ export class TelegramBotService implements OnModuleInit, OnModuleDestroy {
     ]);
 
     try {
-      // Assuming your image is in the 'assets' folder at the root of your project
-      const imagePath = path.join(__dirname, '..', '..', 'assets', 'logo.png');
-      const imageBuffer = fs.readFileSync(imagePath);
+      // Using 'video.mp4' as the filename
+      const videoPath = path.join(__dirname, '..', '..', 'assets', 'video.mp4');
+      const videoBuffer = fs.readFileSync(videoPath);
 
-      await ctx.replyWithPhoto(
-        { source: imageBuffer },
+      await ctx.replyWithVideo(
+        { source: videoBuffer },
         {
           caption: bannerText,
           ...keyboard,
         }
       );
-      console.log('Banner with local image and menu sent successfully');
+      console.log('Banner with local video and menu sent successfully');
     } catch (error) {
-      console.error('Error sending banner with local image and menu:', error);
-      // Fallback to text-only message if image send fails
+      console.error('Error sending banner with local video and menu:', error);
+      // Fallback to text-only message if video send fails
       try {
         await ctx.reply(bannerText, keyboard);
-        console.log('Banner sent without image');
+        console.log('Banner sent without video');
       } catch (fallbackError) {
-        console.error('Error sending banner without image:', fallbackError);
+        console.error('Error sending banner without video:', fallbackError);
       }
     }
   };
