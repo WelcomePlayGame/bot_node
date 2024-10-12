@@ -3,6 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { Telegraf, Context, Markup } from 'telegraf';
 import * as path from 'path';
 import * as fs from 'fs';
+import { MessageReactions } from 'telegraf/typings/reactions';
 
 @Injectable()
 export class TelegramBotService implements OnModuleInit, OnModuleDestroy {
@@ -52,7 +53,7 @@ export class TelegramBotService implements OnModuleInit, OnModuleDestroy {
   Професійна перетяжка та оновлення
   Якісні матеріали • Швидко • Доступно
   Звертайтеся до нас для професійної перетяжки та оновлення ваших меблів!
-  Компанія МЕВАРО: @romaniv21
+ 
     `;
 
     const keyboard = Markup.inlineKeyboard([
@@ -63,13 +64,7 @@ export class TelegramBotService implements OnModuleInit, OnModuleDestroy {
 
     try {
       // Using 'video.mp4' as the filename
-      const videoPath = path.join(
-        __dirname,
-        '..',
-        '..',
-        'assets',
-        'mevaro.mp4'
-      );
+      const videoPath = path.join(__dirname, '..', '..', 'assets', 'video.mp4');
       const videoBuffer = fs.readFileSync(videoPath);
 
       await ctx.replyWithVideo(
