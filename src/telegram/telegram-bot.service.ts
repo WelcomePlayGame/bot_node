@@ -63,7 +63,13 @@ export class TelegramBotService implements OnModuleInit, OnModuleDestroy {
 
     try {
       // Using 'video.mp4' as the filename
-      const videoPath = path.join(__dirname, '..', '..', 'assets', 'video.mp4');
+      const videoPath = path.join(
+        __dirname,
+        '..',
+        '..',
+        'assets',
+        'mevaro.mp4'
+      );
       const videoBuffer = fs.readFileSync(videoPath);
 
       await ctx.replyWithVideo(
