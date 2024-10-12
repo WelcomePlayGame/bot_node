@@ -3,7 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { Telegraf, Context, Markup } from 'telegraf';
 import * as path from 'path';
 import * as fs from 'fs';
-import { MessageReactions } from 'telegraf/typings/reactions';
+import { message } from 'telegraf/filters'; // Import the message filter
 
 @Injectable()
 export class TelegramBotService implements OnModuleInit, OnModuleDestroy {
@@ -34,10 +34,16 @@ export class TelegramBotService implements OnModuleInit, OnModuleDestroy {
   }
 
   private setupBot() {
-    // Handle /start command
+    // Обработка команды /start
     this.bot.command('start', this.showBannerAndMenu);
 
-    // Handle button clicks
+    // Обработка любого текстового сообщения, включая те, что не начинаются с "/"
+    this.bot.on(message('text'), async (ctx) => {
+      console.log('Новое сообщение:', ctx.message.text); // Логируем сообщение для отладки
+      await this.showBannerAndMenu(ctx); // Показываем баннер и меню при любом сообщении
+    });
+
+    // Обработка нажатий кнопок
     this.bot.action(['services', 'contact', 'quote'], async (ctx) => {
       await ctx.answerCbQuery();
       const response = this.getResponseForAction(ctx.match[0]);
@@ -58,7 +64,7 @@ export class TelegramBotService implements OnModuleInit, OnModuleDestroy {
 
     const keyboard = Markup.inlineKeyboard([
       [Markup.button.callback('Наші послуги', 'services')],
-      [Markup.button.callback("Зв'язатися з нами", 'contact')],
+      [Markup.button.callback('Каталог Тканин', 'fabrics')],
       [Markup.button.callback('Замовити консультацію', 'quote')],
     ]);
 
@@ -91,7 +97,7 @@ export class TelegramBotService implements OnModuleInit, OnModuleDestroy {
     switch (action) {
       case 'services':
         return 'Our services include furniture assessment, fabric selection, and professional reupholstery.';
-      case 'contact':
+      case 'fabrics':
         return 'Contact us at: contact@mevaro.com or +1234567890';
       case 'quote':
         return "To request a quote, please send us photos of your furniture and we'll get back to you shortly.";
